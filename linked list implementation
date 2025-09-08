@@ -1,0 +1,65 @@
+#include <iostream>
+using namespace std;
+
+// Node structure for linked list storing non-zero elements
+struct Node {
+    int row;
+    int col;
+    int value;
+    Node* next;
+};
+
+// Create a new node with given row, col, value
+Node* createNode(int r, int c, int val) {
+    Node* newNode = new Node;
+    newNode->row = r;
+    newNode->col = c;
+    newNode->value = val;
+    newNode->next = nullptr;
+    return newNode;
+}
+
+int main() {
+    // 3x3 matrix
+    int matrix[3][3] = {
+        {1, 9, 5},
+        {2, 7, 6},
+        {3, 8, 0}
+    };
+
+    Node* head = nullptr;
+    Node* tail = nullptr;
+
+    // Traverse matrix and add non-zero elements to linked list
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            if (matrix[i][j] != 0) {
+                Node* newNode = createNode(i, j, matrix[i][j]);
+                if (!head) {
+                    head = newNode;
+                    tail = newNode;
+                } else {
+                    tail->next = newNode;
+                    tail = newNode;
+                }
+            }
+        }
+    }
+
+    // Print linked list nodes (row, column, value)
+    cout << "Sparse matrix non-zero elements:" << endl;
+    Node* temp = head;
+    while (temp) {
+        cout << "(" << temp->row << ", " << temp->col << ") = " << temp->value << endl;
+        temp = temp->next;
+    }
+
+    // Cleanup memory
+    while (head) {
+        Node* temp = head;
+        head = head->next;
+        delete temp;
+    }
+
+    return 0;
+}
